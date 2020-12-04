@@ -1,0 +1,16 @@
+! = Negação
+++ = Incremento (Ex: 1++ é igual a 1+1. OBS: x++ pega o valor de x depois incrementa. OBS: ++x Incrementa o valor de X)
+-- = Decremento
+&& = Operador E ou AND
+|| = Operador OU ou OR
+% = mod, ou seja, retorna o resto de uma divisão. (Ex: 4 % 2 == 0)
++, -, *, / = Operadores aritiméticos
+>  Maior que
+<  Menos que
+>= Maior ou igual a
+<= Menor ou igual a
+== Igual a
+= Atribui um valor a
+
+alias ok='norminette -R CheckForbiddenSourceHeader'
+alias gcc='gcc -Wall -Wextra -Werror *.c && ./a.out'

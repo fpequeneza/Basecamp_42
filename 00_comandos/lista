@@ -1,0 +1,258 @@
+=================================================
+Comandos Básicos
+=================================================
+
+pwd                // onde estou
+ls                 // lista de arquivos
+ls -l              // lista detalhada
+clear              // limpa a tela (!) Perde os comandos (<CTRL> + L tb funciona)
+
+touch arquivo      // UMA das formas de se criar um arquivo
+rm arquivo         // deletar um arquivo ou pasta
+
+cd NOME            // Change to Directory Pasta (Entra na pasta com nome NOME)
+mkdir NOME         // Make Directory Pasta (Cria a pasta com nome NOME)
+cd ..			       // Volta um nível na estrutura de pastas
+
+rmdir			       // Remove Directory: apaga uma pasta vazia 
+rmdir --help	    // --help: Abre o menu ajuda de qualquer comando
+rm NOME_ARQUIVO    // Apaga o arquivo de nome NOME_ARQUIVO
+
+
+cat NOME_ARQUIVO   // Uso comum: Escrever na tela o Conteúdo do Arquivo
+                   // uso original: Concatenar um arquivo em outro 
+
+
+/* 5 Formas de se criar um arquivo */
+1: Manual, com o Mouse na área de Explorer
+2: Através do comando "touch nome_arquivo" => Criar um arquivo vazio!
+3: Através do comando "echo "texto" > NOME_ARQUIVO" => Criar um arquivo com conteúdo.
+					   echo tem uma característica: ele SEMPRE inclui um <enter> no final
+4: Através do comando "cat > NOME_ARQUIVO <enter>
+                       Escreve "texto" + <enter> p/ quebra de linha, sai com <ctrl> + D"  
+5: Através do programa VIM NOME_ARQUIVO => <ESC> e depois :wq (w salva, q sai)
+
+
+
+/* Informações sobre a Área de Permissão */
+
+   User
+   |   Group
+   |   |   Others
+   |   |   |  
+D 421 421 421 => Máscara
+- rwx rwx rwx => Padrão cheio
+- rw- r-- r-- => Somente algumas permissões
+   6  4   4   => Soma equivalente a permissão para usar no comando "chmod"
+
+chmod 777 nome_arquivo    // CHange MODe: Muda as permissões
+Queremos chegar em:
+- r-- r-x r-x
+  4   4 1 4 1   => 455
+
+Outra forma:
+chmod u+r testShell00
+chmod g+rx testShell00
+chmod g-w testShell00
+chmod a+r testShell00 (All - todo mundo Read (lê))
+
+A melhor de todas (By Rafael) !!!
+chmod u=r,g=rx,o=rx testShell00
+
+D:
+d => diretório
+- => arquivo
+l => Link, ou atalho
+
+r = 4 => Read     - ler 
+w = 2 => Write    - editar
+x = 1 => eXecute  - rodar o programa
+
+
+git ls-files . --exclude-standard --ignored -Others
+                  |                   |       +-- não rastreados (untracked)
+                  |                   +-- mostra apenas aqueles correspondidos por um padrão de exclusão  
+                  +-- arquivos excluidos que estão no .gitignore
+
+
+=================================================
+Questão 00
+=================================================
+
+/* Como seria a solução mais enxuta do ex00? */
+
+criar a pasta ex00
+entrar na pasta ex00
+criar o arquivo z
+escrever Z <enter> no arquivo
+cat z
+
+echo "Devo estar na pasta Shell00, ok?"
+echo "mkdir cria a pasta"
+mkdir ex00
+cd ex00
+echo "o comando echo "fala algo" > NOME_ARQUIVO"
+echo "Z" > z
+clear
+cat z
+
+/* Formas de colar no terminal */
+<ctrl> + <shift> + V
+<ctrl> + V
+<shift> + <insert>
+
+=================================================
+Questão 01
+=================================================
+
+. criar a pasta ex01
+. entrar na pasta
+. criar um arquivo
+. contenha 40 carcteres
+. editar as permissoes
+. mudar a data de ultima alteracao
+. compactar o arquivo em .tar
+
+touch com parâmetros:
+touch --help
+       -t STAMP
+              use [[CC]YY]MMDDhhmm[.ss] instead of current time
+
+
+/* Como seria a solução mais enxuta do ex01? */
+
+
+echo "Lembre-se de iniciar na pasta Shell00"
+mkdir ex01
+cd ex01
+echo "012345678901234567890123456789012345678" > testShell00
+chmod u=r,g=rx,o=rx testShell00
+echo "Equivale a: chmod 455testShell00"
+touch -t 202006012342 testShell00
+tar -cf testShell00.tar testShell00
+ls -l
+echo "Lembre-se de enviar SOMENTE o testShell.tar!"
+
+
+=================================================
+Questão 02
+=================================================
+
+. comecar na pasta Shell00
+. criar e entrar na pasta ex02
+. criar varios arquivos e pastas
+. saber o que é um lXXXXXXX (descobrir que é um Link)
+. saber o que é uma -> 
+. como modifcar o # que fica após a area de permissoes
+
+
+%> ls -ltotal XX
+drwx--xr-x 2 XX XX  XX Jun 1 20:47 test0
+-rwx--xr-- 1 XX XX  4 Jun 1 21:46 test1
+dr-x---r-- 2 XX XX  XX Jun 1 22:45 test2
+-r-----r-- 2 XX XX  1 Jun 1 23:44 test3
+-rw-r----x 1 XX XX  2 Jun 1 23:43 test4
+-r-----r-- 2 XX XX  1 Jun 1 23:44 test5
+lXXXXXXXXX 1 XX XX  5 Jun 1 22:20 test6 -> test0
+%>
+
+tar -cf exo2.tar *
+
+/* Como seria a solução mais enxuta do ex02? */
+
+echo "Lembre-se de iniciar na pasta Shell00"
+mkdir ex02
+cd ex02
+
+echo "Criando os Arquivos e Pastas"
+mkdir test0
+mkdir test2
+echo "..." > test1
+echo "" > test3
+echo "." > test4
+ln test3 test5
+ln -s test0 test6
+
+echo "Ajustar as Permissões"
+chmod u=rwx,g=x,o=rx test0
+chmod u=rwx,g=x,o=r test1
+chmod u=rx,g=,o=r test2
+chmod u=r,g=,o=r test3
+chmod u=rw,g=r,o=x test4
+echo "O próximo comando é desnecessário"
+chmod u=r,g=,o=r test5
+
+echo "Ajustar os TimeStamps"
+touch -t 202006012047 test0
+touch -t 202006012146 test1
+touch -t 202006012245 test2
+touch -t 202006012344 test3
+touch -t 202006012343 test4
+echo "O próximo comando é desnecessário"
+touch -t 202006012344 test5
+touch -h -t 202006012220 test6
+
+ls -l
+
+tar -cf exo2.tar *
+
+echo "Lembre-se de enviar somente o arquivo .tar"
+
+Comandos na mesma linha:
+
+comando1 && comando2
+#ou
+comando1; comando2
+
+
+//Estrutura do Git da 42
+
+
+Shell00 => Conectado através do git clone
+|       => É interessante clonar essa pasta vazia
+|
+| - ex00/z                           // Ao inves de usar ., especifique o arquivo
+| - ex01/testShell00.tar (somente)   // git add . => git add testShell00.tar => git commit -m "bla" => git push origin master
+| - ex02/exo2.tar (somente)          // git add . => git add exo2.tar        => git commit -m "bla" => git push origin master
+
+
+
+Shell00 => Conectado através do git clone
+|       => É interessante clonar essa pasta vazia
+|
+|
+| - ex01/testShell00.tar (somente)
+|
+
+Shell00/ex01 > git add testShell00.tar
+ou
+Shell00 > git add ex01/testShell00.tar
+
+=== PASSOS ===
+
+1 - git add pasta/arquivo
+1.1 - git status
+1.2*- git reset pasta/arquivo(se precisar cancelar)
+
+2 - git commit -m "mensagem"
+p.s - verificar linha "create mode"
+
+3 - git push origin master
+3.1 - git status
+
+
+
+
+
+=======================================
+Youtube Referência: Link Soft e Hard
+https://www.youtube.com/watch?v=lW_V8oFxQgA&feature=emb_logo
+
+Visualizando o Git
+https://git-school.github.io/visualizing-git/
+
+Estrutura de Commits
+
+=======================================
+
+
